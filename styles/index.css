@@ -454,17 +454,22 @@
     box-shadow: 0 2px 0 1px #c64411;
 }
 
-.catalogMenu > ul > li {
-    padding: 10px 7px;
+.catalogMenu > ul > li:not(.catalogMenuButton) {
+
+    flex-basis: auto;
+    flex-grow: 1;
+    text-align: center;
 }
 
-.catalogMenu > ul > li:hover {
+.catalogMenu > ul > li:not(.catalogMenuButton):hover {
     background-color: #ff743d;
     box-shadow: 0 2px 0 1px #ff743d;
 }
 
 .catalogMenu > ul > li > a {
+    display: block;
     color: white;
+    padding: 10px 7px;
     text-decoration: none;
 }
 
@@ -472,28 +477,29 @@
     text-decoration: underline;
 }
 
-.catalogMenu > ul > li:first-child,
-.catalogMenu > ul > li:last-child{
+.catalogMenuButton {
     padding: 0;
 }
 
-.catalogMenu > ul > li:first-child:hover,
-.catalogMenu > ul > li:last-child:hover{
+.catalogMenuButton:hover{
     background-color: rgba(0,0,0,0);
     box-shadow: none;
+    cursor: pointer;
 }
 
-.catalogMenu > ul > li:first-child button {
+.catalogMenuButton:first-child button,
+.catalogMenu > ul > li:first-child:hover {
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
 }
 
-.catalogMenu > ul > li:last-child button {
+.catalogMenuButton:last-child button,
+.catalogMenu > ul > li:last-child:hover{
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
 }
 
-.catalogMenuButton {
+.catalogMenuButton button{
     height: 100%;
     width: 15px;
     background-color: #c64411;
@@ -501,7 +507,7 @@
     outline: none;
 }
 
-.catalogMenuButton:active {
+.catalogMenuButton button:active {
     outline: none;
     background-color: #ff5816;
 }
