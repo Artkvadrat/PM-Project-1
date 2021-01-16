@@ -1,3 +1,6 @@
+/*
+ * Data for top menu from config file
+ */
 let topMenuContainer = document.getElementsByClassName('navigation')[0];
 
 let dataForTopMenu = Object.values(TOP_MENU).sort((a, b) => {
@@ -24,3 +27,9 @@ topMenuFilling += '</ul>';
 
 topMenuContainer.innerHTML = topMenuFilling;
 
+/*
+ * Data for cart
+ */
+
+let cart = document.getElementsByClassName('cartMain')[0].childNodes[3];
+cart.innerText = `${BASKET.elements} / ${BASKET.price}${CURRENCY === 'UAH' ? 'грн.' : 'р.'}`
