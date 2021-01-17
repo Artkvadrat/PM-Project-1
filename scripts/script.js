@@ -138,4 +138,30 @@ try {
     console.error(e);
 }
 
+/*
+ * News column realisation
+ */
+
+try {
+    if (NEWS.length !== 0) {
+        let newsColumnContainer = document.getElementsByClassName('newsColumnContainer')[0];
+
+        let randomNewsIndexes = [];
+
+        while (randomNewsIndexes.length !== 3) {
+            let randomNumber = Math.floor(Math.random() * NEWS.length);
+            console.log(randomNumber);
+            if (randomNewsIndexes.indexOf(randomNumber) === -1) {
+                randomNewsIndexes.push(randomNumber);
+            }
+        }
+
+
+    } else {
+        throw new Error ('There is no data for news column')
+    }
+} catch (e) {
+    console.error(e);
+}
+
 
