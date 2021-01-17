@@ -144,7 +144,7 @@ try {
 
 try {
     if (NEWS.length !== 0) {
-        let newsColumnContainer = document.getElementsByClassName('newsColumnContainer')[0];
+        let newsColumnContainer = document.getElementsByClassName('newsContainer')[0];
 
         let randomNewsIndexes = [];
 
@@ -156,7 +156,24 @@ try {
             }
         }
 
+        let newsColumnFilling = '';
 
+        randomNewsIndexes.map((item) => {
+            newsColumnFilling += `<div class="newsColumnItem">
+              <div class="newsColumnItemImg">
+                <img src="${NEWS[item].img}"
+                     alt="${NEWS[item].title}">
+                <p>20</p>
+                <p>октября</p>
+              </div>
+              <div class="newsColumnItemInfo">
+                <a href="${NEWS[item].url}">${NEWS[item].title}</a>
+                <p>${NEWS[item].description}</p>
+              </div>
+            </div>`
+        });
+
+        newsColumnContainer.innerHTML = newsColumnFilling;
     } else {
         throw new Error ('There is no data for news column')
     }
