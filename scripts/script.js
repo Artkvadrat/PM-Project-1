@@ -149,10 +149,12 @@ try {
         let newsColumnContainer = document.getElementsByClassName('newsContainer')[0];
 
         let randomNewsIndexes = [];
+        let attemptNumber = 0;
 
-        while (randomNewsIndexes.length !== 3) {
+        while (randomNewsIndexes.length !== 3 && attemptNumber <= 20) {
             let randomNumber = Math.floor(Math.random() * NEWS.length);
-            if (randomNewsIndexes.indexOf(randomNumber) === -1) {
+            attemptNumber++;
+            if (randomNewsIndexes.indexOf(randomNumber) === -1 && NEWS[randomNumber].title && NEWS[randomNumber].description && NEWS[randomNumber].img && NEWS[randomNumber].url && NEWS[randomNumber].date) {
                 randomNewsIndexes.push(randomNumber);
             }
         }
