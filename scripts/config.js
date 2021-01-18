@@ -215,13 +215,54 @@ const ITEMS = [
     {
         type: 'sale',
         description: 'IP телефон Siemens Gigaset C530A IP',
-        img: 'https://same_url.jpg',
+        img: 'images/IP телефон 3.png',
         price: '150',
         oldPrice: '200',
         currency: 'USD',
         date: '2021/01/13',
         url: 'https://same_url/item.html'
     },
+    {
+        type: 'sale',
+        description: 'IP телефон Siemens Gigaset C530A IP2',
+        img: 'images/IP телефон 3.png',
+        price: '300',
+        oldPrice: '500',
+        currency: 'UAH',
+        date: '2021/01/13',
+        url: 'https://same_url/item.html'
+    },
+    {
+        type: 'sale',
+        description: 'IP телефон Siemens Gigaset C530A IP3',
+        img: 'images/IP телефон 3.png',
+        price: '150',
+        oldPrice: '200',
+        currency: 'USD',
+        date: '2021/01/13',
+        url: 'https://same_url/item.html'
+    },
+    {
+        type: 'sale',
+        description: 'IP телефон Siemens Gigaset C530A IP4',
+        img: 'images/IP телефон 3.png',
+        price: '500',
+        oldPrice: '1000',
+        currency: 'USD',
+        date: '2021/01/13',
+        url: 'https://same_url/item.html'
+    },
+    {
+        type: 'sale',
+        description: 'IP телефон Siemens Gigaset C530A IP5',
+        img: 'images/IP телефон 3.png',
+        price: '50',
+        oldPrice: '60',
+        currency: 'USD',
+        date: '2021/01/13',
+        url: 'https://same_url/item.html'
+    },
+
 ];
 
 // time_action format: "d" - day, "h" - hour, "m" - minute. if doesn't exist = infinity

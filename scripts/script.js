@@ -213,6 +213,17 @@ function getProductItem (data, className) {
             </div>`;
 }
 
+/*
+ * Function for checking should mobile button be disabled
+ *
+ * @param {Number} index of last element that is showing
+ * @param {Number} amount of all items that should be shown depending on screen width
+ * @param {Number} amount of all elements that should be shown
+ * @param {HTML Element} html element that should be changed
+ *
+ * @return {void} function doesn't return any data. It change innerHTML of container that is received
+ */
+
 function disablingMobileCarousel (lastItemIndex, maxAmountOfItems, allItemsAmount, container) {
     if (lastItemIndex === maxAmountOfItems - 1) {
         container.firstElementChild.disabled = true;
@@ -226,6 +237,46 @@ function disablingMobileCarousel (lastItemIndex, maxAmountOfItems, allItemsAmoun
         container.lastElementChild.disabled = false;
         container.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobile.png';
     }
+}
+
+/*
+ * Function that takes data and update showing content on page (carousel)
+ *
+ * @param newData {Array} data that should be shown
+ * @param allItemsAmount {Number} amount of all elements that should be shown
+ * @param lastItem {Number} index of last shown element on page
+ * @param maxItemsAmount {Number} max amount of showing elements on page depending on screen width
+ * @param container {HTML Element} element that will be changed
+ * @param mobileContainer {HTML Element} element that transmitted to disablingMobileCarousel function
+ * @param leftHandler {String} name of handler function for left arrow
+ * @param rightHandler {String} name of handler function for right arrow
+ * @param className {String} name of class that is transmitted in getProductItem function for showing labels on the
+ *  top of item
+ *
+ * @return {void} function doesn't return anything, it change innerHTML of container or called another functions
+ */
+
+function updateProducts (newData, allItemsAmount, lastItem, maxItemsAmount, container, mobileContainer, leftHandler, rightHandler, className) {
+    if (window.innerWidth <= 980) {
+        disablingMobileCarousel(lastItem, maxItemsAmount, allItemsAmount, mobileContainer);
+    }
+
+    let filling = '';
+    filling += `<button onclick="${leftHandler}()" ${lastItem === maxItemsAmount - 1 ? 'disabled' : ''}>\n` +
+        `<img src="images/icons/carouselLeftButton${lastItem === maxItemsAmount - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+        '          </button>\n' +
+        '          <div>'
+
+    newData.map((item) => {
+        filling += getProductItem(item, className);
+    });
+
+    filling += '</div>\n' +
+        `          <button onclick="${rightHandler}()" ${lastItem === allItemsAmount-1 ? 'disabled' : ''}>` +
+        `            <img src="images/icons/carouselRightButton${lastItem === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+        '          </button>';
+
+    container.innerHTML = filling;
 }
 
 /*
@@ -272,39 +323,42 @@ try {
             let newProductShowingData = dataForNewBlock.slice(0,maxAmountOfItems);
             let lastItemIndex = maxAmountOfItems-1;
 
-            updateNewProducts(newProductShowingData, dataForNewBlock.length);
-
-            function updateNewProducts (newData, allItemsAmount) {
-                disablingMobileCarousel(lastItemIndex, maxAmountOfItems, allItemsAmount, mobileCarouselContainer);
-
-                newProductsFilling = '';
-                newProductsFilling += `<button onclick="newProductsLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
-                               `<img src="images/icons/carouselLeftButton${lastItemIndex === maxAmountOfItems - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
-                    '          </button>\n' +
-                    '          <div>'
-
-                newData.map((item) => {
-                    newProductsFilling += getProductItem(item, 'newProductItem');
-                });
-
-                newProductsFilling += '</div>\n' +
-                    `          <button onclick="newProductsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
-                    `            <img src="images/icons/carouselRightButton${lastItemIndex === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
-                    '          </button>';
-
-                newProductsContainer.innerHTML = newProductsFilling;
-            }
+            updateProducts(newProductShowingData,
+                dataForNewBlock.length,
+                lastItemIndex,
+                maxAmountOfItems,
+                newProductsContainer,
+                mobileCarouselContainer,
+                'newProductsLeftButtonHandler',
+                'newProductsRightButtonHandler',
+                'newProductItem');
 
             function newProductsLeftButtonHandler () {
                 lastItemIndex--;
                 newProductShowingData = dataForNewBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateNewProducts(newProductShowingData, dataForNewBlock.length);
+                updateProducts(newProductShowingData,
+                    dataForNewBlock.length,
+                    lastItemIndex,
+                    maxAmountOfItems,
+                    newProductsContainer,
+                    mobileCarouselContainer,
+                    'newProductsLeftButtonHandler',
+                    'newProductsRightButtonHandler',
+                    'newProductItem');
             }
 
             function newProductsRightButtonHandler () {
                 lastItemIndex++;
                 newProductShowingData = dataForNewBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateNewProducts(newProductShowingData, dataForNewBlock.length);
+                updateProducts(newProductShowingData,
+                    dataForNewBlock.length,
+                    lastItemIndex,
+                    maxAmountOfItems,
+                    newProductsContainer,
+                    mobileCarouselContainer,
+                    'newProductsLeftButtonHandler',
+                    'newProductsRightButtonHandler',
+                    'newProductItem');
             }
 
         }
@@ -359,46 +413,133 @@ try {
             let recommendProductShowingData = dataForRecommendBlock.slice(0,maxAmountOfItems);
             let lastItemIndex = maxAmountOfItems-1;
 
-            updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
-
-            function updateRecommendProducts (newData, allItemsAmount, lastItem, maxItemsAmount, container, mobileContainer) {
-                if (window.innerWidth <= 980) {
-                    disablingMobileCarousel(lastItem, maxItemsAmount, allItemsAmount, mobileContainer);
-                }
-
-                let filling = '';
-                filling += `<button onclick="recommendProductsLeftButtonHandler()" ${lastItem === maxItemsAmount - 1 ? 'disabled' : ''}>\n` +
-                    `<img src="images/icons/carouselLeftButton${lastItem === maxItemsAmount - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
-                    '          </button>\n' +
-                    '          <div>'
-
-                newData.map((item) => {
-                    filling += getProductItem(item, 'recommendProductItem');
-                });
-
-                filling += '</div>\n' +
-                    `          <button onclick="recommendProductsRightButtonHandler()" ${lastItem === allItemsAmount-1 ? 'disabled' : ''}>` +
-                    `            <img src="images/icons/carouselRightButton${lastItem === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
-                    '          </button>';
-
-                container.innerHTML = filling;
-            }
+            updateProducts(recommendProductShowingData,
+                dataForRecommendBlock.length,
+                lastItemIndex, maxAmountOfItems,
+                recommendProductsContainer,
+                mobileCarouselContainer,
+                'recommendProductsLeftButtonHandler',
+                'recommendProductsRightButtonHandler',
+                'recommendProductItem');
 
             function recommendProductsLeftButtonHandler () {
                 lastItemIndex--;
                 recommendProductShowingData = dataForRecommendBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
+                updateProducts(recommendProductShowingData,
+                    dataForRecommendBlock.length,
+                    lastItemIndex, maxAmountOfItems,
+                    recommendProductsContainer,
+                    mobileCarouselContainer,
+                    'recommendProductsLeftButtonHandler',
+                    'recommendProductsRightButtonHandler',
+                    'recommendProductItem');
             }
 
             function recommendProductsRightButtonHandler () {
                 lastItemIndex++;
                 recommendProductShowingData = dataForRecommendBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
+                updateProducts(recommendProductShowingData,
+                    dataForRecommendBlock.length,
+                    lastItemIndex, maxAmountOfItems,
+                    recommendProductsContainer,
+                    mobileCarouselContainer,
+                    'recommendProductsLeftButtonHandler',
+                    'recommendProductsRightButtonHandler',
+                    'recommendProductItem');
             }
 
         }
     } else {
-        throw new Error('There is no date for newProducts block');
+        throw new Error('There is no date for recommended block');
+    }
+} catch (e) {
+    console.error(e);
+}
+/*
+ * Sale block
+ */
+
+try {
+    let dataForSaleBlock = ITEMS
+        .filter((item) => {
+            return item.type === 'sale';
+        })
+        .sort((a, b) => {
+            return (b.oldPrice - b.price) - (a.oldPrice - a.price);
+        });
+
+    if (dataForSaleBlock.length !== 0) {
+        let saleProductsContainer = document.getElementsByClassName('discountProductItemsBlock')[0];
+
+        let saleProductsFilling = '';
+
+        let maxAmountOfItems;
+
+        if (window.innerWidth > 980) {
+            maxAmountOfItems = 4;
+        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
+            maxAmountOfItems = 3;
+        } else {
+            maxAmountOfItems = 1;
+        }
+
+
+        if (dataForSaleBlock.length <= maxAmountOfItems) {
+            saleProductsFilling += '<div>\n';
+
+            dataForSaleBlock.map((item) => {
+                saleProductsFilling += getProductItem(item, 'discountProductItem');
+            });
+
+            saleProductsFilling += '</div>';
+            saleProductsContainer.innerHTML = saleProductsFilling;
+        } else {
+            let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[2];
+
+            let saleProductShowingData = dataForSaleBlock.slice(0,maxAmountOfItems);
+            let lastItemIndex = maxAmountOfItems-1;
+
+            updateProducts(saleProductShowingData,
+                dataForSaleBlock.length,
+                lastItemIndex,
+                maxAmountOfItems,
+                saleProductsContainer,
+                mobileCarouselContainer,
+                'saleProductsLeftButtonHandler',
+                'saleProductsRightButtonHandler',
+                'discountProductItem');
+
+            function saleProductsLeftButtonHandler () {
+                lastItemIndex--;
+                saleProductShowingData = dataForSaleBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateProducts(saleProductShowingData,
+                    dataForSaleBlock.length,
+                    lastItemIndex,
+                    maxAmountOfItems,
+                    saleProductsContainer,
+                    mobileCarouselContainer,
+                    'saleProductsLeftButtonHandler',
+                    'saleProductsRightButtonHandler',
+                    'discountProductItem');
+            }
+
+            function saleProductsRightButtonHandler () {
+                lastItemIndex++;
+                saleProductShowingData = dataForSaleBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateProducts(saleProductShowingData,
+                    dataForSaleBlock.length,
+                    lastItemIndex,
+                    maxAmountOfItems,
+                    saleProductsContainer,
+                    mobileCarouselContainer,
+                    'saleProductsLeftButtonHandler',
+                    'saleProductsRightButtonHandler',
+                    'discountProductItem');
+            }
+
+        }
+    } else {
+        throw new Error('There is no date for sale block');
     }
 } catch (e) {
     console.error(e);
