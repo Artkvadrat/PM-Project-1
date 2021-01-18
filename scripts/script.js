@@ -231,7 +231,18 @@ try {
 
         let newProductsFilling = '';
 
-        if (data.length <= 4) {
+        let maxAmountOfItems;
+
+        if (window.innerWidth > 980) {
+            maxAmountOfItems = 4;
+        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
+            maxAmountOfItems = 3;
+        } else {
+            maxAmountOfItems = 1;
+        }
+
+
+        if (data.length <= maxAmountOfItems) {
             newProductsFilling += '<div>\n';
 
             data.map((item) => {
@@ -241,15 +252,31 @@ try {
             newProductsFilling += '</div>';
             newProductsContainer.innerHTML = newProductsFilling;
         } else {
-            let newProductShowingData = data.slice(0,4);
-            let lastItemIndex = 3;
+            let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[0];
+
+            let newProductShowingData = data.slice(0,maxAmountOfItems);
+            let lastItemIndex = maxAmountOfItems-1;
 
             updateNewProducts(newProductShowingData, data.length);
 
             function updateNewProducts (newData, allItemsAmount) {
+                // disabling mobile carousel buttons
+                if (lastItemIndex === maxAmountOfItems - 1) {
+                    mobileCarouselContainer.firstElementChild.disabled = true;
+                    mobileCarouselContainer.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobileDisabled.png';
+                } else if(lastItemIndex === allItemsAmount-1) {
+                    mobileCarouselContainer.lastElementChild.disabled = true;
+                    mobileCarouselContainer.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobileDisabled.png';
+                } else {
+                    mobileCarouselContainer.firstElementChild.disabled = false;
+                    mobileCarouselContainer.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobile.png';
+                    mobileCarouselContainer.lastElementChild.disabled = false;
+                    mobileCarouselContainer.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobile.png';
+                }
+
                 newProductsFilling = '';
-                newProductsFilling += `<button onclick="productsLeftButtonHandler()" ${lastItemIndex === 3 ? 'disabled' : ''}>\n` +
-                               `<img src="images/icons/carouselLeftButton${lastItemIndex === 3 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                newProductsFilling += `<button onclick="newProductsLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
+                               `<img src="images/icons/carouselLeftButton${lastItemIndex === maxAmountOfItems - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
                     '          </button>\n' +
                     '          <div>'
 
@@ -258,22 +285,22 @@ try {
                 });
 
                 newProductsFilling += '</div>\n' +
-                    `          <button onclick="productsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
+                    `          <button onclick="newProductsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
                     `            <img src="images/icons/carouselRightButton${lastItemIndex === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
                     '          </button>';
 
                 newProductsContainer.innerHTML = newProductsFilling;
             }
 
-            function productsLeftButtonHandler () {
+            function newProductsLeftButtonHandler () {
                 lastItemIndex--;
-                newProductShowingData = data.slice(lastItemIndex-3, lastItemIndex+1);
+                newProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
                 updateNewProducts(newProductShowingData, data.length);
             }
 
-            function productsRightButtonHandler () {
+            function newProductsRightButtonHandler () {
                 lastItemIndex++;
-                newProductShowingData = data.slice(lastItemIndex-3, lastItemIndex+1);
+                newProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
                 updateNewProducts(newProductShowingData, data.length);
             }
 
