@@ -157,14 +157,16 @@ try {
         }
 
         let newsColumnFilling = '';
-
+        let months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
         randomNewsIndexes.map((item) => {
+            let date = NEWS[item].date[8]+NEWS[item].date[9];
+            let monthNumber = Number(NEWS[item].date[5]+NEWS[item].date[6]);
             newsColumnFilling += `<div class="newsColumnItem">
               <div class="newsColumnItemImg">
                 <img src="${NEWS[item].img}"
                      alt="${NEWS[item].title}">
-                <p>20</p>
-                <p>октября</p>
+                <p>${date}</p>
+                <p>${months[monthNumber-1]}</p>
               </div>
               <div class="newsColumnItemInfo">
                 <a href="${NEWS[item].url}">${NEWS[item].title}</a>
