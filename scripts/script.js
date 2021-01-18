@@ -213,6 +213,21 @@ function getProductItem (data, className) {
             </div>`;
 }
 
+function disablingMobileCarousel (lastItemIndex, maxAmountOfItems, allItemsAmount, container) {
+    if (lastItemIndex === maxAmountOfItems - 1) {
+        container.firstElementChild.disabled = true;
+        container.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobileDisabled.png';
+    } else if(lastItemIndex === allItemsAmount-1) {
+        container.lastElementChild.disabled = true;
+        container.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobileDisabled.png';
+    } else {
+        container.firstElementChild.disabled = false;
+        container.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobile.png';
+        container.lastElementChild.disabled = false;
+        container.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobile.png';
+    }
+}
+
 /*
  * New products realisation
  */
@@ -260,19 +275,7 @@ try {
             updateNewProducts(newProductShowingData, data.length);
 
             function updateNewProducts (newData, allItemsAmount) {
-                // disabling mobile carousel buttons
-                if (lastItemIndex === maxAmountOfItems - 1) {
-                    mobileCarouselContainer.firstElementChild.disabled = true;
-                    mobileCarouselContainer.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobileDisabled.png';
-                } else if(lastItemIndex === allItemsAmount-1) {
-                    mobileCarouselContainer.lastElementChild.disabled = true;
-                    mobileCarouselContainer.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobileDisabled.png';
-                } else {
-                    mobileCarouselContainer.firstElementChild.disabled = false;
-                    mobileCarouselContainer.firstElementChild.firstElementChild.src = 'images/icons/carouselLeftButtonMobile.png';
-                    mobileCarouselContainer.lastElementChild.disabled = false;
-                    mobileCarouselContainer.lastElementChild.lastElementChild.src = 'images/icons/carouselRightButtonMobile.png';
-                }
+                disablingMobileCarousel(lastItemIndex, maxAmountOfItems, allItemsAmount, mobileCarouselContainer);
 
                 newProductsFilling = '';
                 newProductsFilling += `<button onclick="newProductsLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
@@ -312,4 +315,93 @@ try {
     console.error(e);
 }
 
+/*
+ * Recommend product realisation
+ */
 
+try {
+    let data = ITEMS
+        .filter((item) => {
+            return item.type === 'recommended';
+        })
+        .sort((a, b) => {
+            return a.price - b.price;
+        });
+
+    if (data.length !== 0) {
+        let recommendProductsContainer = document.getElementsByClassName('recommendProductItemsBlock')[0];
+
+        let recommendProductsFilling = '';
+
+        let maxAmountOfItems;
+
+        if (window.innerWidth > 980) {
+            maxAmountOfItems = 4;
+        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
+            maxAmountOfItems = 3;
+        } else {
+            maxAmountOfItems = 1;
+        }
+
+
+        if (data.length <= maxAmountOfItems) {
+            recommendProductsFilling += '<div>\n';
+
+            data.map((item) => {
+                recommendProductsFilling += getProductItem(item, 'recommendProductItem');
+            });
+
+            recommendProductsFilling += '</div>';
+            recommendProductsContainer.innerHTML = recommendProductsFilling;
+        } else {
+            let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[1];
+
+            let recommendProductShowingData = data.slice(0,maxAmountOfItems);
+            let lastItemIndex = maxAmountOfItems-1;
+
+            updateNewProducts(recommendProductShowingData, data.length);
+
+            function updateRecommendProducts (newData, allItemsAmount) {
+                disablingMobileCarousel(lastItemIndex, maxAmountOfItems, allItemsAmount, mobileCarouselContainer);
+
+                recommendProductsFilling = '';
+                recommendProductsFilling += `<button onclick="recommendProductsLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
+                    `<img src="images/icons/carouselLeftButton${lastItemIndex === maxAmountOfItems - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>\n' +
+                    '          <div>'
+
+                newData.map((item) => {
+                    recommendProductsFilling += getProductItem(item, 'recommendProductItem');
+                });
+
+                recommendProductsFilling += '</div>\n' +
+                    `          <button onclick="recommendProductsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
+                    `            <img src="images/icons/carouselRightButton${lastItemIndex === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>';
+
+                recommendProductsContainer.innerHTML = recommendProductsFilling;
+            }
+
+            function recommendProductsLeftButtonHandler () {
+                lastItemIndex--;
+                recommendProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateRecommendProducts(recommendProductShowingData, data.length, mobileCarouselContainer,
+                    lastItemIndex,
+                    maxAmountOfItems);
+            }
+
+            function recommendProductsRightButtonHandler () {
+                lastItemIndex++;
+                recommendProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateRecommendProducts(recommendProductShowingData, data.length, mobileCarouselContainer,
+                    lastItemIndex,
+                    maxAmountOfItems);
+            }
+
+        }
+    } else {
+        throw new Error('There is no date for newProducts block');
+    }
+} catch (e) {
+    console.error(e);
+}

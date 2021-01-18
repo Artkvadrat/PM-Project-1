@@ -165,8 +165,48 @@ const ITEMS = [
     {
         type: 'recommended',
         description: 'IP телефон Siemens Gigaset C530A IP',
-        img: 'https://same_url.jpg',
+        img: 'images/IP телефон 2.png',
         price: '300',
+        oldPrice: '1100',
+        currency: 'RUB',
+        date: '2020/12/25',
+        url: 'new_items/item.html'
+    },
+    {
+        type: 'recommended',
+        description: 'IP телефон Siemens Gigaset C530A IP2',
+        img: 'images/IP телефон 2.png',
+        price: '400',
+        oldPrice: '1100',
+        currency: 'RUB',
+        date: '2020/12/25',
+        url: 'new_items/item.html'
+    },
+    {
+        type: 'recommended',
+        description: 'IP телефон Siemens Gigaset C530A IP3',
+        img: 'images/IP телефон 2.png',
+        price: '200',
+        oldPrice: '1100',
+        currency: 'RUB',
+        date: '2020/12/25',
+        url: 'new_items/item.html'
+    },
+    {
+        type: 'recommended',
+        description: 'IP телефон Siemens Gigaset C530A IP4',
+        img: 'images/IP телефон 2.png',
+        price: '1000',
+        oldPrice: '1100',
+        currency: 'RUB',
+        date: '2020/12/25',
+        url: 'new_items/item.html'
+    },
+    {
+        type: 'recommended',
+        description: 'IP телефон Siemens Gigaset C530A IP5',
+        img: 'images/IP телефон 2.png',
+        price: '500',
         oldPrice: '1100',
         currency: 'RUB',
         date: '2020/12/25',
