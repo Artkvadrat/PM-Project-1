@@ -817,9 +817,7 @@
     margin: auto 0;
 }
 
-.newProductItem,
-.recommendProductItem,
-.discountProductItem {
+.productItem {
     max-width: 250px;
     min-width: 230px;
     border: 1px solid #dbdee6;
@@ -832,15 +830,11 @@
     transition-duration: 0.2s;
 }
 
-.newProductItem:hover,
-.recommendProductItem:hover,
-.discountProductItem:hover {
+.productItem:hover {
     border-color: #ff5816;
 }
 
-.newProductItem:before,
-.recommendProductItem:before,
-.discountProductItem:before {
+.productItem:before {
     position: absolute;
     top: -1px;
 }
@@ -857,25 +851,21 @@
     content: url("../images/icons/discount.png");
 }
 
-.newProductItem a,
-.recommendProductItem a,
-.discountProductItem a{
+.productItem a {
     display: block;
     color: #4673ab;
     transition-property: color;
     transition-duration: 0.2s;
 }
 
-.newProductItem a:hover,
+.productItem a:hover,
 .recommendProductItem a:hover,
 .discountProductItem a:hover{
     color: #ff5816;
 
 }
 
-.newProductItemPriceBlock,
-.recommendProductItemPriceBlock,
-.discountProductItemPriceBlock {
+.productItemPriceBlock {
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
@@ -893,16 +883,12 @@
     text-decoration: line-through;
 }
 
-.newProductItemBuyLine,
-.recommendProductItemBuyLine,
-.discountProductItemBuyLine {
+.productItemBuyLine {
     margin-top: 15px;
     display: flex;
 }
 
-.newProductItemBuyButton,
-.recommendProductItemBuyButton,
-.discountProductItemBuyButton {
+.productItemBuyButton {
     display: flex;
     background-color: #ff5816;
     border: 0;
@@ -917,36 +903,26 @@
     transition-duration: 0.2s;
 }
 
-.newProductItemBuyButton:active,
-.recommendProductItemBuyButton:active,
-.discountProductItemBuyButton:active {
+.productItemBuyButton:active {
     background-color: #4673ab;
     box-shadow: 0 4px 0 0 #365884;
 }
 
-.newProductItemBuyButton img,
-.recommendProductItemBuyButton img,
-.discountProductItemBuyButton img {
+.productItemBuyButton img {
     margin-right: 10px;
     margin-top: 5px;
 }
 
-.newProductItemBuyLine a,
-.recommendProductItemBuyLine a,
-.discountProductItemBuyLine a{
+.productItemBuyLine a{
     padding-top: 16px;
     padding-left: 15px;
 }
 
-.newProductItemImg,
-.recommendProductItemImg,
-.discountProductItemImg {
+.productItemImg {
     height: 180px;
 }
 
-.newProductItemImg img,
-.recommendProductItemImg img,
-.discountProductItemImg img{
+.productItemImg img {
     display: block;
     margin: auto;
 }
