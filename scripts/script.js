@@ -233,7 +233,7 @@ function disablingMobileCarousel (lastItemIndex, maxAmountOfItems, allItemsAmoun
  */
 
 try {
-    let data = ITEMS
+    let dataForNewBlock = ITEMS
         .filter((item) => {
         return item.type === 'new';
         })
@@ -241,7 +241,7 @@ try {
         return Date.parse(b.date) - Date.parse(a.date);
         });
 
-    if (data.length !== 0) {
+    if (dataForNewBlock.length !== 0) {
         let newProductsContainer = document.getElementsByClassName('newProductItemsBlock')[0];
 
         let newProductsFilling = '';
@@ -257,10 +257,10 @@ try {
         }
 
 
-        if (data.length <= maxAmountOfItems) {
+        if (dataForNewBlock.length <= maxAmountOfItems) {
             newProductsFilling += '<div>\n';
 
-            data.map((item) => {
+            dataForNewBlock.map((item) => {
                 newProductsFilling += getProductItem(item, 'newProductItem');
             });
 
@@ -269,10 +269,10 @@ try {
         } else {
             let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[0];
 
-            let newProductShowingData = data.slice(0,maxAmountOfItems);
+            let newProductShowingData = dataForNewBlock.slice(0,maxAmountOfItems);
             let lastItemIndex = maxAmountOfItems-1;
 
-            updateNewProducts(newProductShowingData, data.length);
+            updateNewProducts(newProductShowingData, dataForNewBlock.length);
 
             function updateNewProducts (newData, allItemsAmount) {
                 disablingMobileCarousel(lastItemIndex, maxAmountOfItems, allItemsAmount, mobileCarouselContainer);
@@ -297,14 +297,14 @@ try {
 
             function newProductsLeftButtonHandler () {
                 lastItemIndex--;
-                newProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateNewProducts(newProductShowingData, data.length);
+                newProductShowingData = dataForNewBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateNewProducts(newProductShowingData, dataForNewBlock.length);
             }
 
             function newProductsRightButtonHandler () {
                 lastItemIndex++;
-                newProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateNewProducts(newProductShowingData, data.length);
+                newProductShowingData = dataForNewBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateNewProducts(newProductShowingData, dataForNewBlock.length);
             }
 
         }
@@ -320,7 +320,7 @@ try {
  */
 
 try {
-    let data = ITEMS
+    let dataForRecommendBlock = ITEMS
         .filter((item) => {
             return item.type === 'recommended';
         })
@@ -328,7 +328,7 @@ try {
             return a.price - b.price;
         });
 
-    if (data.length !== 0) {
+    if (dataForRecommendBlock.length !== 0) {
         let recommendProductsContainer = document.getElementsByClassName('recommendProductItemsBlock')[0];
 
         let recommendProductsFilling = '';
@@ -344,10 +344,10 @@ try {
         }
 
 
-        if (data.length <= maxAmountOfItems) {
+        if (dataForRecommendBlock.length <= maxAmountOfItems) {
             recommendProductsFilling += '<div>\n';
 
-            data.map((item) => {
+            dataForRecommendBlock.map((item) => {
                 recommendProductsFilling += getProductItem(item, 'recommendProductItem');
             });
 
@@ -356,46 +356,44 @@ try {
         } else {
             let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[1];
 
-            let recommendProductShowingData = data.slice(0,maxAmountOfItems);
+            let recommendProductShowingData = dataForRecommendBlock.slice(0,maxAmountOfItems);
             let lastItemIndex = maxAmountOfItems-1;
 
-            updateNewProducts(recommendProductShowingData, data.length);
+            updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
 
-            function updateRecommendProducts (newData, allItemsAmount) {
-                disablingMobileCarousel(lastItemIndex, maxAmountOfItems, allItemsAmount, mobileCarouselContainer);
+            function updateRecommendProducts (newData, allItemsAmount, lastItem, maxItemsAmount, container, mobileContainer) {
+                if (window.innerWidth <= 980) {
+                    disablingMobileCarousel(lastItem, maxItemsAmount, allItemsAmount, mobileContainer);
+                }
 
-                recommendProductsFilling = '';
-                recommendProductsFilling += `<button onclick="recommendProductsLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
-                    `<img src="images/icons/carouselLeftButton${lastItemIndex === maxAmountOfItems - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                let filling = '';
+                filling += `<button onclick="recommendProductsLeftButtonHandler()" ${lastItem === maxItemsAmount - 1 ? 'disabled' : ''}>\n` +
+                    `<img src="images/icons/carouselLeftButton${lastItem === maxItemsAmount - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
                     '          </button>\n' +
                     '          <div>'
 
                 newData.map((item) => {
-                    recommendProductsFilling += getProductItem(item, 'recommendProductItem');
+                    filling += getProductItem(item, 'recommendProductItem');
                 });
 
-                recommendProductsFilling += '</div>\n' +
-                    `          <button onclick="recommendProductsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
-                    `            <img src="images/icons/carouselRightButton${lastItemIndex === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                filling += '</div>\n' +
+                    `          <button onclick="recommendProductsRightButtonHandler()" ${lastItem === allItemsAmount-1 ? 'disabled' : ''}>` +
+                    `            <img src="images/icons/carouselRightButton${lastItem === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
                     '          </button>';
 
-                recommendProductsContainer.innerHTML = recommendProductsFilling;
+                container.innerHTML = filling;
             }
 
             function recommendProductsLeftButtonHandler () {
                 lastItemIndex--;
-                recommendProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateRecommendProducts(recommendProductShowingData, data.length, mobileCarouselContainer,
-                    lastItemIndex,
-                    maxAmountOfItems);
+                recommendProductShowingData = dataForRecommendBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
             }
 
             function recommendProductsRightButtonHandler () {
                 lastItemIndex++;
-                recommendProductShowingData = data.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
-                updateRecommendProducts(recommendProductShowingData, data.length, mobileCarouselContainer,
-                    lastItemIndex,
-                    maxAmountOfItems);
+                recommendProductShowingData = dataForRecommendBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateRecommendProducts(recommendProductShowingData, dataForRecommendBlock.length, lastItemIndex, maxAmountOfItems, recommendProductsContainer, mobileCarouselContainer);
             }
 
         }
