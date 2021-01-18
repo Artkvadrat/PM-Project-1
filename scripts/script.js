@@ -183,6 +183,37 @@ try {
 }
 
 /*
+ * Function to return an item block.
+ *
+ * @param {object} object that contains data
+ * @param {string} string that show class for :before element
+ * @return {string} html string
+ */
+
+function getProductItem (data, className) {
+    return `<div class="productItem ${className}">
+                <a href="${data.url}">
+                    <div class="productItemImg">
+                        <img src="${data.img || 'images/IP телефон 2.png'}" alt="${data.description}">
+                    </div>
+                    <a href="${data.url}">${data.description}</a>
+                    <div class="productItemPriceBlock">
+                        <p>Цена:</p>
+                        <p class="price">${data.price} ${data.currency === 'UAH' && data.price ? 'грн.' : ''} ${data.currency === 'RUB' && data.price ? 'р.' : ''}</p>
+                        <p class="oldPrice">${data.oldPrice ? data.oldPrice : ''} ${data.currency === 'UAH' && data.oldPrice && data.price ? 'грн.' : ''}${data.currency === 'RUB' && data.oldPrice && data.price ? 'р.' : ''}</p>
+                    </div>
+                    <div class="productItemBuyLine">
+                        <button class="productItemBuyButton">
+                        <img src="images/icons/foodBasket.png" alt="купить">
+                            купить
+                        </button>
+                        <a href="${data.url}">Подробнее</a>
+                    </div>
+                </a>
+            </div>`;
+}
+
+/*
  * New products realisation
  */
 
@@ -201,34 +232,52 @@ try {
         let newProductsFilling = '';
 
         if (data.length <= 4) {
-            newProductsFilling += '<div>';
+            newProductsFilling += '<div>\n';
 
             data.map((item) => {
-                newProductsFilling += `<div class="newProductItem">
-              <a href="${item.url}">
-                <div class="newProductItemImg">
-                  <img src="${item.img}" alt="${item.description}">
-                </div>
-                <a href="${item.url}">${item.description}</a>
-                <div class="newProductItemPriceBlock">
-                  <p>Цена:</p>
-                  <p class="price">${item.price} ${item.currency === 'UAH' ? 'грн.' : 'р.'}</p>
-                  <p class="oldPrice">${item.oldPrice ? item.oldPrice : '' }  ${item.currency === 'UAH' && item.oldPrice ? 'грн.' : 'р.'}</p>
-                </div>
-                <div class="newProductItemBuyLine">
-                  <button class="newProductItemBuyButton">
-                    <img src="images/icons/foodBasket.png" alt="купить">
-                    купить
-                  </button>
-                  <a href="${item.url}">Подробнее</a>
-                </div>
-              </a>
-            </div>`
-            })
+                newProductsFilling += getProductItem(item, 'newProductItem');
+            });
+
+            newProductsFilling += '</div>';
+            newProductsContainer.innerHTML = newProductsFilling;
+        } else {
+            let newProductShowingData = data.slice(0,4);
+            let lastItemIndex = 3;
+
+            updateNewProducts(newProductShowingData, data.length);
+
+            function updateNewProducts (newData, allItemsAmount) {
+                newProductsFilling = '';
+                newProductsFilling += `<button onclick="productsLeftButtonHandler()" ${lastItemIndex === 3 ? 'disabled' : ''}>\n` +
+                               `<img src="images/icons/carouselLeftButton${lastItemIndex === 3 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>\n' +
+                    '          <div>'
+
+                newData.map((item) => {
+                    newProductsFilling += getProductItem(item, 'newProductItem');
+                });
+
+                newProductsFilling += '</div>\n' +
+                    `          <button onclick="productsRightButtonHandler()" ${lastItemIndex === allItemsAmount-1 ? 'disabled' : ''}>` +
+                    `            <img src="images/icons/carouselRightButton${lastItemIndex === allItemsAmount-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>';
+
+                newProductsContainer.innerHTML = newProductsFilling;
+            }
+
+            function productsLeftButtonHandler () {
+                lastItemIndex--;
+                newProductShowingData = data.slice(lastItemIndex-3, lastItemIndex+1);
+                updateNewProducts(newProductShowingData, data.length);
+            }
+
+            function productsRightButtonHandler () {
+                lastItemIndex++;
+                newProductShowingData = data.slice(lastItemIndex-3, lastItemIndex+1);
+                updateNewProducts(newProductShowingData, data.length);
+            }
+
         }
-
-
-        newProductsContainer.innerHTML = newProductsFilling;
     } else {
         throw new Error('There is no date for newProducts block');
     }
