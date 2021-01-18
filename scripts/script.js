@@ -1,4 +1,3 @@
-'use strict'
 /*
  * Data for top menu from config file
  */
@@ -306,6 +305,18 @@ function addToBasket (price) {
     cart.childNodes[1].innerText = 'КОРЗИНА'
 }
 
+function getMaxAmountOfItems () {
+    let result;
+    if (window.innerWidth > 980) {
+        result = 4;
+    } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
+        result = 3;
+    } else {
+        result = 1;
+    }
+    return result;
+}
+
 /*
  * New products realisation
  */
@@ -324,16 +335,11 @@ try {
 
         let newProductsFilling = '';
 
-        let maxAmountOfItems;
+        let maxAmountOfItems = getMaxAmountOfItems();
 
-        if (window.innerWidth > 980) {
-            maxAmountOfItems = 4;
-        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
-            maxAmountOfItems = 3;
-        } else {
-            maxAmountOfItems = 1;
+        if (dataForNewBlock.length > 10) {
+            dataForNewBlock.slice(0, 10);
         }
-
 
         if (dataForNewBlock.length <= maxAmountOfItems) {
             newProductsFilling += '<div>\n';
@@ -415,16 +421,11 @@ try {
 
         let recommendProductsFilling = '';
 
-        let maxAmountOfItems;
+        let maxAmountOfItems = getMaxAmountOfItems();
 
-        if (window.innerWidth > 980) {
-            maxAmountOfItems = 4;
-        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
-            maxAmountOfItems = 3;
-        } else {
-            maxAmountOfItems = 1;
+        if (dataForRecommendBlock.length > 10) {
+            dataForRecommendBlock.slice(0, 10);
         }
-
 
         if (dataForRecommendBlock.length <= maxAmountOfItems) {
             recommendProductsFilling += '<div>\n';
@@ -502,16 +503,11 @@ try {
 
         let saleProductsFilling = '';
 
-        let maxAmountOfItems;
+        let maxAmountOfItems = getMaxAmountOfItems();
 
-        if (window.innerWidth > 980) {
-            maxAmountOfItems = 4;
-        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
-            maxAmountOfItems = 3;
-        } else {
-            maxAmountOfItems = 1;
+        if (dataForSaleBlock.length > 10) {
+            dataForSaleBlock.slice(0, 10);
         }
-
 
         if (dataForSaleBlock.length <= maxAmountOfItems) {
             saleProductsFilling += '<div>\n';
@@ -571,6 +567,147 @@ try {
         document.getElementsByClassName('discountProductBlock')[0].style.display = 'none';
         throw new Error('There is no date for sale block');
     }
+} catch (e) {
+    console.error(e);
+}
+
+/*
+ * Discount block
+ */
+
+try {
+    let dataForDiscountBlock = PROMOTIONS;
+
+    if (dataForDiscountBlock.length !== 0) {
+        let discountBlock = document.getElementsByClassName('stockItemsBlock')[0];
+
+        let discountsFilling = '';
+
+        let maxAmountOfItems = getMaxAmountOfItems();
+
+        if (dataForDiscountBlock.length <= maxAmountOfItems) {
+            discountsFilling += '<div>\n';
+
+            dataForDiscountBlock.map((item) => {
+                if (item.time_action) {
+
+                }
+                discountsFilling += `<div class="stockItem">
+                                          <a href="${item.url}">${item.title}</a>
+                                          <img src="${item.img}" alt="Акция 1">
+                                          <p>${item.description}</p>
+                                          <div class="stockItemValidityBlock">
+                                            <p>Срок действия:</p>
+                                            <div class="timer">
+                                              <div class="days">
+                                                <span>0</span>
+                                                <span>0</span>
+                                                <p>дней</p>
+                                              </div>
+                                              <span class="timerColon">:</span>
+                                              <div class="hours">
+                                                <span>0</span>
+                                                <span>0</span>
+                                                <p>часов</p>
+                                              </div>
+                                              <span class="timerColon">:</span>
+                                              <div class="minutes">
+                                                <span>1</span>
+                                                <span>6</span>
+                                                <p>минут</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="detailsLink">
+                                            <a href="${item.url}">Подробнее</a>
+                                          </div>
+                                        </div>`
+            });
+
+            discountsFilling += '</div>';
+            discountBlock.innerHTML = discountsFilling;
+        } else {
+            if (dataForDiscountBlock.length > 10) {
+                dataForDiscountBlock.slice(0, 10);
+            }
+            let mobileCarouselContainer = document.getElementsByClassName('mobileCarousel')[3];
+
+            let discountShowingData = dataForDiscountBlock.slice(0,maxAmountOfItems);
+            let lastItemIndex = maxAmountOfItems-1;
+
+            updateDiscount(discountShowingData);
+
+            function updateDiscount (newData) {
+                if (window.innerWidth <= 980) {
+                    disablingMobileCarousel(lastItemIndex, maxAmountOfItems, dataForDiscountBlock, mobileCarouselContainer);
+                }
+
+                let filling = '';
+                filling += `<button onclick="discountLeftButtonHandler()" ${lastItemIndex === maxAmountOfItems - 1 ? 'disabled' : ''}>\n` +
+                    `<img src="images/icons/carouselLeftButton${lastItemIndex === maxAmountOfItems - 1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>\n' +
+                    '          <div>'
+
+                newData.map((item) => {
+                    filling += `<div class="stockItem">
+                                          <a href="${item.url}">${item.title}</a>
+                                          <img src="${item.img}" alt="Акция 1">
+                                          <p>${item.description}</p>
+                                          <div class="stockItemValidityBlock">
+                                            <p>Срок действия:</p>
+                                            <div class="timer">
+                                              <div class="days">
+                                                <span>0</span>
+                                                <span>0</span>
+                                                <p>дней</p>
+                                              </div>
+                                              <span class="timerColon">:</span>
+                                              <div class="hours">
+                                                <span>0</span>
+                                                <span>0</span>
+                                                <p>часов</p>
+                                              </div>
+                                              <span class="timerColon">:</span>
+                                              <div class="minutes">
+                                                <span>1</span>
+                                                <span>6</span>
+                                                <p>минут</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="detailsLink">
+                                            <a href="${item.url}">Подробнее</a>
+                                          </div>
+                                        </div>`
+                });
+
+                filling += '</div>\n' +
+                    `          <button onclick="discountRightButtonHandler()" ${lastItemIndex === dataForDiscountBlock.length-1 ? 'disabled' : ''}>` +
+                    `            <img src="images/icons/carouselRightButton${lastItemIndex === dataForDiscountBlock.length-1 ? 'Disabled' : ''}.png" alt="Влево">\n` +
+                    '          </button>';
+
+                discountBlock.innerHTML = filling;
+            }
+
+            function discountLeftButtonHandler () {
+                lastItemIndex--;
+                discountShowingData = dataForDiscountBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateDiscount(discountShowingData);
+            }
+
+            function discountRightButtonHandler () {
+                lastItemIndex++;
+                discountShowingData = dataForDiscountBlock.slice(lastItemIndex-(maxAmountOfItems-1), lastItemIndex+1);
+                updateDiscount(discountShowingData);
+            }
+
+        }
+
+    } else {
+        document.getElementsByClassName('stockBlock')[0].style.display = 'none';
+        throw new Error('There is no data for promotion block');
+    }
+
 } catch (e) {
     console.error(e);
 }
