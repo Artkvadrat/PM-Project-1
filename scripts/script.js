@@ -1,3 +1,4 @@
+'use strict'
 /*
  * Data for top menu from config file
  */
@@ -41,8 +42,10 @@ try {
  */
 
 let cart = document.getElementsByClassName('cartMain')[0];
+let basteElements = BASKET.elements || 0;
+let basketPrice = BASKET.price || 0;
 if (BASKET.elements && BASKET.price) {
-    cart.childNodes[3].innerText = `${BASKET.elements} / ${BASKET.price}${CURRENCY === 'UAH' ? 'грн.' : 'р.'}`;
+    cart.childNodes[3].innerText = `${basteElements} / ${basketPrice}${CURRENCY === 'UAH' ? 'грн.' : ''}${CURRENCY === 'RUB' ? 'р.' : ''}${CURRENCY === 'USD' ? 'дол.' : ''}`;
 } else {
     cart.childNodes[1].innerText = 'КОРЗИНА ПУСТА'
 }
@@ -191,6 +194,18 @@ try {
  */
 
 function getProductItem (data, className) {
+    let price, oldPrice;
+    if (data.currency !== CURRENCY && data.price) {
+        price = Math.floor(data.price * CURRENCY_EXCHANGE[data.currency]);
+        oldPrice = Math.floor(data.oldPrice * CURRENCY_EXCHANGE[data.currency]);
+    } else if (data.price) {
+        price = data.price;
+        oldPrice = data.oldPrice;
+    }
+
+    let priceBlock = `<p>Цена:</p>
+                      <p class="price">${price} ${CURRENCY === 'UAH' ? 'грн.' : ''}${CURRENCY === 'RUB' ? 'р.' : ''}${CURRENCY === 'USD' ? 'дол.' : ''}</p>
+                      <p class="oldPrice">${oldPrice ? oldPrice : ''} ${CURRENCY === 'UAH' ? 'грн.' : ''}${CURRENCY === 'RUB' ? 'р.' : ''}${CURRENCY === 'USD' ? 'дол.' : ''}</p>`
     return `<div class="productItem ${className}">
                 <a href="${data.url}">
                     <div class="productItemImg">
@@ -198,13 +213,11 @@ function getProductItem (data, className) {
                     </div>
                     <a href="${data.url}">${data.description}</a>
                     <div class="productItemPriceBlock">
-                        <p>Цена:</p>
-                        <p class="price">${data.price} ${data.currency === 'UAH' && data.price ? 'грн.' : ''} ${data.currency === 'RUB' && data.price ? 'р.' : ''}</p>
-                        <p class="oldPrice">${data.oldPrice ? data.oldPrice : ''} ${data.currency === 'UAH' && data.oldPrice && data.price ? 'грн.' : ''}${data.currency === 'RUB' && data.oldPrice && data.price ? 'р.' : ''}</p>
+                        ${price ? priceBlock : 'Товар временно недоступен'}
                     </div>
                     <div class="productItemBuyLine">
-                        <button class="productItemBuyButton">
-                        <img src="images/icons/foodBasket.png" alt="купить">
+                        <button class="productItemBuyButton" onclick="addToBasket(${price})" ${price ? '' : 'disabled'}>
+                            <img src="images/icons/foodBasket.png" alt="купить">
                             купить
                         </button>
                         <a href="${data.url}">Подробнее</a>
@@ -277,6 +290,20 @@ function updateProducts (newData, allItemsAmount, lastItem, maxItemsAmount, cont
         '          </button>';
 
     container.innerHTML = filling;
+}
+/*
+ * Adding to basket function
+ *
+ * @param price {Number} price of item
+ * @return {void} changing html element of basket
+ */
+
+function addToBasket (price) {
+    console.log('Adding to basket');
+    basteElements++;
+    basketPrice += price;
+    cart.childNodes[3].innerText = `${basteElements} / ${basketPrice}${CURRENCY === 'UAH' ? 'грн.' : ''}${CURRENCY === 'RUB' ? 'р.' : ''}${CURRENCY === 'USD' ? 'дол.' : ''}`;
+    cart.childNodes[1].innerText = 'КОРЗИНА'
 }
 
 /*
@@ -363,6 +390,7 @@ try {
 
         }
     } else {
+        document.getElementsByClassName('newProductBlock')[0].style.display = 'none';
         throw new Error('There is no date for newProducts block');
     }
 } catch (e) {
@@ -450,6 +478,7 @@ try {
 
         }
     } else {
+        document.getElementsByClassName('recommendProductBlock')[0].style.display = 'none';
         throw new Error('There is no date for recommended block');
     }
 } catch (e) {
@@ -539,6 +568,7 @@ try {
 
         }
     } else {
+        document.getElementsByClassName('discountProductBlock')[0].style.display = 'none';
         throw new Error('There is no date for sale block');
     }
 } catch (e) {

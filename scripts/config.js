@@ -2,7 +2,7 @@ const CURRENCY = 'UAH';
 
 const CURRENCY_EXCHANGE = {
     USD: 27.96,
-    RUB: 0.38,
+    RUB: 0.38
 };
 
 const BASKET = {
@@ -116,7 +116,7 @@ const ITEMS = [
         type: 'new',
         description: 'IP телефон Siemens Gigaset C530A IP1',
         img: 'images/IP%20телефон%201.png',
-        price: '1000',
+        price: '',
         oldPrice: '1100',
         currency: 'UAH',
         date: '2021/01/01',
