@@ -150,7 +150,6 @@ try {
 
         while (randomNewsIndexes.length !== 3) {
             let randomNumber = Math.floor(Math.random() * NEWS.length);
-            console.log(randomNumber);
             if (randomNewsIndexes.indexOf(randomNumber) === -1) {
                 randomNewsIndexes.push(randomNumber);
             }
@@ -178,6 +177,60 @@ try {
         newsColumnContainer.innerHTML = newsColumnFilling;
     } else {
         throw new Error ('There is no data for news column')
+    }
+} catch (e) {
+    console.error(e);
+}
+
+/*
+ * New products realisation
+ */
+
+try {
+    let data = ITEMS
+        .filter((item) => {
+        return item.type === 'new';
+        })
+        .sort((a, b) => {
+        return Date.parse(b.date) - Date.parse(a.date);
+        });
+
+    if (data.length !== 0) {
+        let newProductsContainer = document.getElementsByClassName('newProductItemsBlock')[0];
+
+        let newProductsFilling = '';
+
+        if (data.length <= 4) {
+            newProductsFilling += '<div>';
+
+            data.map((item) => {
+                newProductsFilling += `<div class="newProductItem">
+              <a href="${item.url}">
+                <div class="newProductItemImg">
+                  <img src="${item.img}" alt="${item.description}">
+                </div>
+                <a href="${item.url}">${item.description}</a>
+                <div class="newProductItemPriceBlock">
+                  <p>Цена:</p>
+                  <p class="price">${item.price} ${item.currency === 'UAH' ? 'грн.' : 'р.'}</p>
+                  <p class="oldPrice">${item.oldPrice ? item.oldPrice : '' }  ${item.currency === 'UAH' && item.oldPrice ? 'грн.' : 'р.'}</p>
+                </div>
+                <div class="newProductItemBuyLine">
+                  <button class="newProductItemBuyButton">
+                    <img src="images/icons/foodBasket.png" alt="купить">
+                    купить
+                  </button>
+                  <a href="${item.url}">Подробнее</a>
+                </div>
+              </a>
+            </div>`
+            })
+        }
+
+
+        newProductsContainer.innerHTML = newProductsFilling;
+    } else {
+        throw new Error('There is no date for newProducts block');
     }
 } catch (e) {
     console.error(e);
