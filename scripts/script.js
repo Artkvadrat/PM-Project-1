@@ -866,8 +866,9 @@ let dataForMainBrands = [
 try {
     if (dataForMainBrands.length !== 0) {
         let mainBrandsBlock = document.getElementsByClassName('keyBrandItemsBlock')[0];
-        let maxElementsAmount = 0;
+        let mobileContainer = document.getElementsByClassName('mobileCarousel')[4];
 
+        let maxElementsAmount = 0;
         if (window.innerWidth > 1140) {
             maxElementsAmount = 9;
         } else if (window.innerWidth > 980 && window.innerWidth <= 1140) {
@@ -879,6 +880,8 @@ try {
         let lastItemIndex = maxElementsAmount-1;
         let showingData = dataForMainBrands.slice(0, maxElementsAmount);
         updateMainBrandsBlock(showingData);
+        disablingMobileCarousel(lastItemIndex, maxElementsAmount, dataForMainBrands.length, mobileContainer);
+
 
         function updateMainBrandsBlock (data) {
             let filling = '';
@@ -893,8 +896,6 @@ try {
             }
             mainBrandsBlock.innerHTML = filling;
         }
-
-        let mobileContainer = document.getElementsByClassName('mobileCarousel')[4];
 
         function mainBrandsLeftButton () {
             lastItemIndex--;
@@ -916,4 +917,91 @@ try {
 } catch (e) {
     document.getElementsByClassName('keyBrandBlock')[0].style.display = 'none';
     console.error(e)
+}
+
+let numberBlockData = [
+    {
+        size: 'big',
+        itemImgText: '10',
+        description: '10 лет на рынке'
+    },
+    {
+        size: 'medium',
+        itemImgText: '25/5',
+        description: '25 профильных специалистов, 5 менеджеров отдела продаж'
+    },
+    {
+        size: 'small',
+        itemImgText: '2222<br/>x<br/>100',
+        description: '2222 товара в каталоге среди 100 брендов'
+    },
+    {
+        size: 'big',
+        itemImgText: '29',
+        description: '29 торговых партнеров'
+    },
+    {
+        size: 'big',
+        itemImgText: '14',
+        description: '14 отгрузок в сутки'
+    },
+    {
+        size: 'big',
+        itemImgText: '1',
+        description: '1 из лидеров рынка'
+    }
+];
+
+try {
+    if (numberBlockData.length !== 0) {
+        let numberBlock = document.getElementsByClassName('numberItemsBlock')[0];
+        let mobileContainer = document.getElementsByClassName('mobileCarousel')[5];
+
+        let maxElementsAmount = 0;
+        if (window.innerWidth > 750 && window.innerWidth <= 980) {
+            maxElementsAmount = 4;
+        } else if (window.innerWidth > 980) {
+            maxElementsAmount = 6;
+        }
+
+        let lastItemIndex = maxElementsAmount-1;
+        let showingData = numberBlockData.slice(0, maxElementsAmount);
+
+        updateNumberBlock(showingData);
+        disablingMobileCarousel(lastItemIndex, maxElementsAmount, numberBlockData.length, mobileContainer);
+
+
+        function updateNumberBlock (data) {
+            let filling = '';
+            for (let i = 0; i < maxElementsAmount; i++) {
+                filling += `<div class="numberItem">
+                                <div class="numberItemImg ${data[i].size}">${data[i].itemImgText}</div>
+                                <div class="numberDescription">
+                                  ${data[i].description}
+                                </div>
+                              </div>`
+            }
+            numberBlock.innerHTML = filling;
+        }
+
+
+        function numbersLeftButton () {
+            lastItemIndex--;
+            disablingMobileCarousel(lastItemIndex, maxElementsAmount, numberBlockData.length, mobileContainer);
+            showingData = numberBlockData.slice(lastItemIndex-(maxElementsAmount-1), lastItemIndex+1);
+            updateNumberBlock(showingData);
+        }
+
+        function numbersRightButton () {
+            lastItemIndex++;
+            disablingMobileCarousel(lastItemIndex, maxElementsAmount, numberBlockData.length, mobileContainer);
+            showingData = numberBlockData.slice(lastItemIndex-(maxElementsAmount-1), lastItemIndex+1);
+            updateNumberBlock(showingData);
+        }
+    } else {
+        throw new Error('There is no data for numberBlock');
+    }
+
+} catch (e) {
+    console.error(e);
 }

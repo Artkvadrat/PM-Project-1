@@ -165,7 +165,7 @@
         margin-left: 20px;
     }
 
-    .mobileCarousel {
+    .mobileCarousel:not(:last-child) {
         display: block;
     }
 
@@ -216,10 +216,6 @@
         margin-right: 15px;
     }
 
-    .numberItem:nth-child(n+5) {
-        display: none;
-    }
-
     .upperFooterFourthColumn > a {
         margin-right: 5px;
     }
@@ -257,6 +253,10 @@
     .stockItem:nth-child(n+4),
     .popularProductItem:nth-child(n+4) {
         display: none;
+    }
+
+    .mobileCarousel:last-child {
+        display: block;
     }
 
     .upperFooterFirstColumn,
