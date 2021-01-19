@@ -180,9 +180,77 @@ try {
 
         newsColumnContainer.innerHTML = newsColumnFilling;
     } else {
+        document.getElementsByClassName('newsColumn')[0].style.display = 'none';
         throw new Error ('There is no data for news column')
     }
 } catch (e) {
+    console.error(e);
+    document.getElementsByClassName('newsColumn')[0].style.display = 'none';
+}
+
+/*
+ * Banner
+ */
+
+try {
+    if (BANNER.length !== 0) {
+        let dataForBanner = BANNER.sort((a, b) => {
+            return a.order - b.order;
+        });
+
+        dataForBanner = dataForBanner.slice(0, Math.min(dataForBanner.length, 5));
+
+        let bannerLinkElement = document.getElementsByClassName('slide')[0].firstElementChild;
+        let backgroundImgElement = bannerLinkElement.firstElementChild;
+        let dots = document.getElementsByClassName('dots')[0];
+
+        for (let i = 0; i < dataForBanner.length ; i++) {
+            dots.innerHTML += `<div class="dot" onclick="bannerDotClick(${i})"></div>`
+        }
+        dots.firstElementChild.classList.add('active');
+        bannerLinkElement.href = dataForBanner[0].url;
+        backgroundImgElement.src = dataForBanner[0].img || 'images/sliderImage.jpg';
+
+        let showingElementIndex = 0;
+
+        let infinitySlide = setInterval(bannerRightClick, 10000);
+
+        let dotChildren = dots.children;
+
+        function bannerLeftClick () {
+            dotChildren[showingElementIndex].classList.remove('active');
+            showingElementIndex--;
+            if (showingElementIndex === -1) {
+                showingElementIndex = dataForBanner.length-1;
+            }
+            backgroundImgElement.src = dataForBanner[showingElementIndex].img || 'images/sliderImage.jpg';
+            dotChildren[showingElementIndex].classList.add('active');
+
+        }
+
+        function bannerRightClick () {
+            dotChildren[showingElementIndex].classList.remove('active');
+            showingElementIndex++;
+            if (showingElementIndex === dataForBanner.length) {
+                showingElementIndex = 0;
+            }
+            backgroundImgElement.src = dataForBanner[showingElementIndex].img || 'images/sliderImage.jpg';
+            dotChildren[showingElementIndex].classList.add('active');
+        }
+
+        function bannerDotClick (id) {
+            clearInterval(infinitySlide);
+            dotChildren[showingElementIndex].classList.remove('active');
+            showingElementIndex = id;
+            backgroundImgElement.src = dataForBanner[id].img || 'images/sliderImage.jpg';
+            dotChildren[id].classList.add('active');
+        }
+    } else {
+        document.getElementsByClassName('slider')[0].style.display = 'none';
+        throw new Error('There is no data for banner');
+    }
+} catch (e) {
+    document.getElementsByClassName('slider')[0].style.display = 'none';
     console.error(e);
 }
 
@@ -402,6 +470,7 @@ try {
         throw new Error('There is no date for newProducts block');
     }
 } catch (e) {
+    document.getElementsByClassName('newProductBlock')[0].style.display = 'none';
     console.error(e);
 }
 
@@ -485,6 +554,7 @@ try {
         throw new Error('There is no date for recommended block');
     }
 } catch (e) {
+    document.getElementsByClassName('recommendProductBlock')[0].style.display = 'none';
     console.error(e);
 }
 /*
@@ -570,6 +640,7 @@ try {
         throw new Error('There is no date for sale block');
     }
 } catch (e) {
+    document.getElementsByClassName('discountProductBlock')[0].style.display = 'none';
     console.error(e);
 }
 
@@ -708,5 +779,43 @@ try {
     }
 
 } catch (e) {
+    document.getElementsByClassName('stockBlock')[0].style.display = 'none';
+    console.error(e);
+}
+
+/*
+ * Buying right now
+ */
+
+try {
+    let dataForBuyingRightNow = BUYING_RIGHT_NOW;
+
+    if (dataForBuyingRightNow.length !== 0) {
+
+        let buyingRightNowBlock = document.getElementsByClassName('popularProductItemsBlock')[0];
+
+        let buyingRightNowFilling = '';
+
+        let maxAmountOfItems = Math.min(getMaxAmountOfItems(), dataForBuyingRightNow.length);
+
+        for (let i = 0; i < maxAmountOfItems; i++) {
+            buyingRightNowFilling += `<div class="popularProductItem">
+                                        <a href="${dataForBuyingRightNow[i].url}">
+                                          <div class="popularProductItemImg">
+                                            <img src="${dataForBuyingRightNow[i].img ? dataForBuyingRightNow[i].img : 'images/IP телефон 3.png'}" alt="${dataForBuyingRightNow[i].title}">
+                                          </div>
+                                          <div class="popularProductItemLink">
+                                            <a href="${dataForBuyingRightNow[i].url}">${dataForBuyingRightNow[i].title}</a>
+                                          </div>
+                                        </a>
+                                      </div>`
+        }
+        buyingRightNowBlock.innerHTML = buyingRightNowFilling;
+    } else {
+        document.getElementsByClassName('popularProductBlock')[0].style.display = 'none';
+        throw new Error('There is no data for buying right now block')
+    }
+} catch (e) {
+    document.getElementsByClassName('popularProductBlock')[0].style.display = 'none';
     console.error(e);
 }

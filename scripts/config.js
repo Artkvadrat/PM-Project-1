@@ -100,12 +100,12 @@ const NEWS = [
 const BANNER = [
     {
         order: 1,
-        img: 'https://same_url.jpg',
+        img: 'images/sliderImage.jpg',
         url: 'voip_equipment.html',
     },
     {
         order: 2,
-        img: 'https://same_url2.jpg',
+        img: 'images/sliderImage.jpg',
         url: 'voip_equipment.html',
     }
 ];
@@ -311,12 +311,32 @@ const PROMOTIONS = [
 const BUYING_RIGHT_NOW = [
     {
         title: 'Название товара',
-        img: 'https://same_url.jpg',
+        img: 'images/IP телефон 3.png',
         url: 'https://same_url/item.html',
     },
     {
         title: 'Название товара 2',
-        img: 'https://same_url.jpg',
+        img: 'images/IP телефон 3.png',
+        url: 'https://same_url/item.html',
+    },
+    {
+        title: 'Название товара',
+        img: 'images/IP телефон 3.png',
+        url: 'https://same_url/item.html',
+    },
+    {
+        title: 'Название товара 2',
+        img: 'images/IP телефон 3.png',
+        url: 'https://same_url/item.html',
+    },
+    {
+        title: 'Название товара',
+        img: 'images/IP телефон 3.png',
+        url: 'https://same_url/item.html',
+    },
+    {
+        title: 'Название товара 2',
+        img: 'images/IP телефон 3.png',
         url: 'https://same_url/item.html',
     },
 ]
