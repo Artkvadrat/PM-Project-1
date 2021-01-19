@@ -348,7 +348,7 @@
 }
 
 .cart .cartMain p {
-    min-width: 90px;
+    min-width: 120px;
 }
 
 .cart .cartMain p::before {

@@ -1,5 +1,7 @@
 /*
- * Data for top menu from config file
+ * Top menu realisation
+ * If item of menu has submenu, in mobileMenu added button, that has onclick event handler, that called function
+ * secondMobileMenu with id property. And then rerender mobileMenu innerHTML.
  */
 try {
     if (Object.keys(TOP_MENU).length !== 0) {
@@ -30,6 +32,9 @@ try {
 
         topMenuContainer.innerHTML = topMenuFilling;
 
+        /*
+         * Mobile menu realisation
+         */
         let overlayFilling = '';
 
         mainMobileMenu();
@@ -72,6 +77,7 @@ try {
 
 /*
  * Data for cart
+ * BasketElements and basketPrice variables are globally visible for adding items in it
  */
 
 let cart = document.getElementsByClassName('cartMain')[0];
@@ -85,6 +91,9 @@ if (BASKET.elements && BASKET.price) {
 
 /*
  * Catalog menu realisation
+ * If catalog items are more than 10, displaying side buttons. It disabling when menu is on the end or start edge.
+ * Edges checking by index of last showing element.
+ * Button handlers decreased or increased index of last shown element.
  */
 
 try {
@@ -176,6 +185,7 @@ try {
 
 /*
  * News column realisation
+ * If there is no data for item, it skipped. Max amount of attempts for find random news that isn't founded is 20.
  */
 
 try {
@@ -223,7 +233,8 @@ try {
 }
 
 /*
- * Banner
+ * Banner carousel realisation
+ * Banner change image every 10 second. But if user clicked on dot, it stopped to changed.
  */
 
 try {
@@ -409,6 +420,12 @@ function addToBasket (price) {
     cart.childNodes[1].innerText = 'КОРЗИНА'
 }
 
+/*
+ * Function that returns max amount of elements in the row of products depending in screen width.
+ *
+ * @return {Number} max amount of items
+ */
+
 function getMaxAmountOfItems () {
     let result;
     if (window.innerWidth > 980) {
@@ -423,6 +440,8 @@ function getMaxAmountOfItems () {
 
 /*
  * New products realisation
+ * For displaying items used updateProducts function that returns html for item.
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
  */
 
 try {
@@ -510,6 +529,8 @@ try {
 
 /*
  * Recommend product realisation
+ * For displaying items used updateProducts function that returns html for item.
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
  */
 
 try {
@@ -592,7 +613,9 @@ try {
     console.error(e);
 }
 /*
- * Sale block
+ * Sale block realisation
+ * For displaying items used updateProducts function that returns html for item.
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
  */
 
 try {
@@ -678,6 +701,14 @@ try {
     console.error(e);
 }
 
+/*
+ * Function that takes data and returns html element for discount block. Timer data recieved by using regular
+ *  expression. If Data is too large, it decreased to the maximum of allowed.
+ *
+ * @param data {Object} object that contains all data
+ * @return {HTMl Element}
+ */
+
 function getStockItem (data) {
     let dateBlock = ''
     if (data.time_action) {
@@ -737,9 +768,10 @@ function getStockItem (data) {
 }
 
 /*
- * Discount block
+ * Discount block realisation
+ * For displaying items used updateProducts function that returns html for item.
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
  */
-
 try {
     let dataForDiscountBlock = PROMOTIONS;
 
@@ -772,7 +804,7 @@ try {
 
             function updateDiscount (newData) {
                 if (window.innerWidth <= 980) {
-                    disablingMobileCarousel(lastItemIndex, maxAmountOfItems, dataForDiscountBlock, mobileCarouselContainer);
+                    disablingMobileCarousel(lastItemIndex, maxAmountOfItems, dataForDiscountBlock.length, mobileCarouselContainer);
                 }
 
                 let filling = '';
@@ -818,7 +850,8 @@ try {
 }
 
 /*
- * Buying right now
+ * Buying right now block realisation
+ * Takes max amount of items that is allowed depending on screen width and show items.
  */
 
 try {
@@ -855,7 +888,8 @@ try {
 }
 
 /*
- * Main brands
+ * Main brands realisation
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
  */
 
 let dataForMainBrands = [
@@ -952,6 +986,11 @@ try {
     document.getElementsByClassName('keyBrandBlock')[0].style.display = 'none';
     console.error(e)
 }
+
+/*
+ * Numbers block realisation
+ * On every button click it checked is edge reached. If it is, button disabling by disablingMobileCarousel function.
+ */
 
 let numberBlockData = [
     {
