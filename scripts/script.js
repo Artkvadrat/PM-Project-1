@@ -4,6 +4,7 @@
 try {
     if (Object.keys(TOP_MENU).length !== 0) {
         let topMenuContainer = document.getElementsByClassName('navigation')[0];
+        let mobileMenuContainer = document.getElementById('overlay').firstElementChild;
 
         let dataForTopMenu = Object.values(TOP_MENU).sort((a, b) => {
             return a.order - b.order;
@@ -28,13 +29,46 @@ try {
         topMenuFilling += '</ul>';
 
         topMenuContainer.innerHTML = topMenuFilling;
+
+        let overlayFilling = '';
+
+        mainMobileMenu();
+
+        function mainMobileMenu () {
+            overlayFilling = '';
+            for (let i = 0; i < amountOfMenuItems; i++) {
+                if (dataForTopMenu[i].submenu) {
+                    overlayFilling += `<li>
+                         <button onclick="secondMobileMenu(${i})">${dataForTopMenu[i].title}</button>
+                       </li>`
+                } else {
+                    overlayFilling += `<li>
+                        <a href="${dataForTopMenu[i].url}">${dataForTopMenu[i].title}</a>
+                      </li>`
+                }
+            }
+            mobileMenuContainer.innerHTML = overlayFilling;
+        }
+
+        function secondMobileMenu (id) {
+            let overlayFilling = '<li>' +
+                            '<button onclick="mainMobileMenu()">Назад</button>' +
+                            '</li>';
+            for (let i = 0; i < dataForTopMenu[id].submenu.length; i++) {
+                overlayFilling += `<li>` +
+                                    `<a href="${dataForTopMenu[id].submenu[i].url}">${dataForTopMenu[id].submenu[i].title}</a>` +
+                                    `</li>`
+            }
+
+            mobileMenuContainer.innerHTML = overlayFilling;
+        }
+
     } else {
         throw new Error('There is no data for top menu');
     }
 } catch (e) {
     console.error(e);
 }
-
 
 /*
  * Data for cart

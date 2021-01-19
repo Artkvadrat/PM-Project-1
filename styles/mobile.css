@@ -99,12 +99,25 @@
         padding-top: 70px;
     }
 
-    #overlay ul li a {
+    #overlay ul li a,
+    #overlay ul li button {
         color: #ff6837;
         text-decoration: none;
         margin-top: 30px;
         margin-bottom: 30px;
         font-size: 26px;
+        font-family: "Roboto-Regular", sans-serif;
+    }
+
+    #overlay ul li button {
+        background-color: rgba(0,0,0,0);
+        border: 0;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    #overlay ul li button:focus {
+        outline: none;
     }
 
     nav input:checked ~ #overlay {
