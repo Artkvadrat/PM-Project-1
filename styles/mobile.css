@@ -177,6 +177,11 @@
         height: 30px;
     }
 
+    .mobileCarousel button:focus {
+        outline: none;
+        border-color: #ff6837;
+    }
+
     .newProductItemsBlock > button,
     .recommendProductItemsBlock > button,
     .discountProductItemsBlock > button,

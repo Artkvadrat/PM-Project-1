@@ -573,6 +573,64 @@ try {
     console.error(e);
 }
 
+function getStockItem (data) {
+    let dateBlock = ''
+    if (data.time_action) {
+        let regForDateFinding = /[0-9]{1,2}/g
+        let date = data.time_action.match(regForDateFinding);
+        date.map((item, id) => {
+            if (item.length === 1) {
+                date[id] = '0' + item;
+            }
+        });
+
+
+        if (Number(date[2]) >= 60) {
+            date[2] = '59';
+        }
+        if (Number(date[1]) >= 24) {
+            date[1] = '23';
+        }
+        if (Number(date[0]) >= 99) {
+            date[0] = '99';
+        }
+
+        dateBlock += `<div class="days">
+                        <span>${date[0][0]}</span>
+                        <span>${date[0][1]}</span>
+                        <p>дней</p>
+                      </div>
+                      <span class="timerColon">:</span>
+                      <div class="hours">
+                        <span>${date[1][0]}</span>
+                        <span>${date[1][1]}</span>
+                        <p>часов</p>
+                      </div>
+                      <span class="timerColon">:</span>
+                      <div class="minutes">
+                        <span>${date[2][0]}</span>
+                        <span>${date[2][1]}</span>
+                        <p>минут</p>
+                      </div>`
+    } else {
+        dateBlock += '<p>Бессрочно</p>'
+    }
+    return `<div class="stockItem">
+              <a href="${data.url}">${data.title}</a>
+              <img src="${data.img ? data.img : 'images/акция2.png'}" alt="Акция 1">
+              <p>${data.description}</p>
+              <div class="stockItemValidityBlock">
+                <p>Срок действия:</p>
+                <div class="timer">
+                   ${dateBlock}
+                </div>
+              </div>
+              <div class="detailsLink">
+                <a href="${data.url}">Подробнее</a>
+              </div>
+            </div>`
+}
+
 /*
  * Discount block
  */
@@ -591,39 +649,7 @@ try {
             discountsFilling += '<div>\n';
 
             dataForDiscountBlock.map((item) => {
-                if (item.time_action) {
-
-                }
-                discountsFilling += `<div class="stockItem">
-                                          <a href="${item.url}">${item.title}</a>
-                                          <img src="${item.img}" alt="Акция 1">
-                                          <p>${item.description}</p>
-                                          <div class="stockItemValidityBlock">
-                                            <p>Срок действия:</p>
-                                            <div class="timer">
-                                              <div class="days">
-                                                <span>0</span>
-                                                <span>0</span>
-                                                <p>дней</p>
-                                              </div>
-                                              <span class="timerColon">:</span>
-                                              <div class="hours">
-                                                <span>0</span>
-                                                <span>0</span>
-                                                <p>часов</p>
-                                              </div>
-                                              <span class="timerColon">:</span>
-                                              <div class="minutes">
-                                                <span>1</span>
-                                                <span>6</span>
-                                                <p>минут</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div class="detailsLink">
-                                            <a href="${item.url}">Подробнее</a>
-                                          </div>
-                                        </div>`
+                discountsFilling += getStockItem(item);
             });
 
             discountsFilling += '</div>';
@@ -651,36 +677,7 @@ try {
                     '          <div>'
 
                 newData.map((item) => {
-                    filling += `<div class="stockItem">
-                                          <a href="${item.url}">${item.title}</a>
-                                          <img src="${item.img}" alt="Акция 1">
-                                          <p>${item.description}</p>
-                                          <div class="stockItemValidityBlock">
-                                            <p>Срок действия:</p>
-                                            <div class="timer">
-                                              <div class="days">
-                                                <span>0</span>
-                                                <span>0</span>
-                                                <p>дней</p>
-                                              </div>
-                                              <span class="timerColon">:</span>
-                                              <div class="hours">
-                                                <span>0</span>
-                                                <span>0</span>
-                                                <p>часов</p>
-                                              </div>
-                                              <span class="timerColon">:</span>
-                                              <div class="minutes">
-                                                <span>1</span>
-                                                <span>6</span>
-                                                <p>минут</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div class="detailsLink">
-                                            <a href="${item.url}">Подробнее</a>
-                                          </div>
-                                        </div>`
+                    filling += getStockItem(item);
                 });
 
                 filling += '</div>\n' +

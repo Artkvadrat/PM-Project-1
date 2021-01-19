@@ -688,10 +688,6 @@
     flex-wrap: wrap;
 }
 
-.linkToAllMobile {
-    display: none;
-}
-
 .newProductHeader hr,
 .recommendProductHeader hr,
 .discountProductHeader hr,
@@ -717,10 +713,6 @@
 .discountProductHeader a:hover,
 .stockHeader a:hover{
     color: #ff5816;
-}
-
-.mobileCarousel {
-    display: none;
 }
 
 .popularProductHeader h2,
