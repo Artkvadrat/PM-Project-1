@@ -819,3 +819,101 @@ try {
     document.getElementsByClassName('popularProductBlock')[0].style.display = 'none';
     console.error(e);
 }
+
+/*
+ * Main brands
+ */
+
+let dataForMainBrands = [
+    {
+        url: '#',
+        img: 'images/icons/logoSamsung.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoPanasonic.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoSiemens.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoFanvil.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoEscene.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoYealink.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoOpenVox.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoSenvo.png'
+    },
+    {
+        url: '#',
+        img: 'images/icons/logoOpenMesh.png'
+    }
+]
+
+try {
+    if (dataForMainBrands.length !== 0) {
+        let mainBrandsBlock = document.getElementsByClassName('keyBrandItemsBlock')[0];
+        let maxElementsAmount = 0;
+
+        if (window.innerWidth > 1140) {
+            maxElementsAmount = 9;
+        } else if (window.innerWidth > 980 && window.innerWidth <= 1140) {
+            maxElementsAmount = 7;
+        } else if (window.innerWidth > 750 && window.innerWidth <= 980) {
+            maxElementsAmount = 5;
+        }
+
+        let lastItemIndex = maxElementsAmount-1;
+        let showingData = dataForMainBrands.slice(0, maxElementsAmount);
+        updateMainBrandsBlock(showingData);
+
+        function updateMainBrandsBlock (data) {
+            let filling = '';
+            for (let i = 0; i < maxElementsAmount; i++) {
+                filling += `<div class="keyBrandItem">
+                            <a href="${data[i].url}">
+                              <div class="keyBrandItemImg">
+                                <img src="${data[i].img}" alt="Samsung">
+                              </div>
+                            </a>
+                          </div>`
+            }
+            mainBrandsBlock.innerHTML = filling;
+        }
+
+        let mobileContainer = document.getElementsByClassName('mobileCarousel')[4];
+
+        function mainBrandsLeftButton () {
+            lastItemIndex--;
+            disablingMobileCarousel(lastItemIndex, maxElementsAmount, dataForMainBrands.length, mobileContainer);
+            showingData = dataForMainBrands.slice(lastItemIndex-(maxElementsAmount-1), lastItemIndex+1);
+            updateMainBrandsBlock(showingData);
+        }
+
+        function mainBrandsRightButton () {
+            lastItemIndex++;
+            disablingMobileCarousel(lastItemIndex, maxElementsAmount, dataForMainBrands.length, mobileContainer);
+            showingData = dataForMainBrands.slice(lastItemIndex-(maxElementsAmount-1), lastItemIndex+1);
+            updateMainBrandsBlock(showingData);
+        }
+    } else {
+        document.getElementsByClassName('keyBrandBlock')[0].style.display = 'none';
+        throw new Error('There is no data for for keyBrand block');
+    }
+} catch (e) {
+    document.getElementsByClassName('keyBrandBlock')[0].style.display = 'none';
+    console.error(e)
+}
